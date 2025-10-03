@@ -26,6 +26,59 @@ else
     echo ""
 fi
 
+# Update progress tracking before committing
+echo "📝 Progress Tracking Update:"
+echo "Would you like to update PROGRESS_LOG.md with today's accomplishments? (y/N):"
+read -r UPDATE_PROGRESS
+if [[ $UPDATE_PROGRESS =~ ^[Yy]$ ]]; then
+    echo ""
+    echo "What did you accomplish in this session? (Enter items, press Enter twice when done):"
+    echo "Examples:"
+    echo "  - Implemented LoadLifecycleService interface"
+    echo "  - Added 5 unit tests for ID generation"
+    echo "  - Fixed build issue with TigerBeetle integration"
+    echo ""
+    
+    ACCOMPLISHMENTS=""
+    while true; do
+        read -r ITEM
+        if [ -z "$ITEM" ]; then
+            break
+        fi
+        if [ -n "$ACCOMPLISHMENTS" ]; then
+            ACCOMPLISHMENTS="$ACCOMPLISHMENTS\n- $ITEM"
+        else
+            ACCOMPLISHMENTS="- $ITEM"
+        fi
+    done
+    
+    if [ -n "$ACCOMPLISHMENTS" ]; then
+        # Update the timestamp in PROGRESS_LOG.md
+        CURRENT_DATE=$(date '+%Y-%m-%d %H:%M')
+        sed -i "s/Updated: [0-9\-]* [0-9:]*/Updated: $CURRENT_DATE/g" PROGRESS_LOG.md
+        
+        # Add to session notes section
+        SESSION_DATE=$(date '+%Y-%m-%d')
+        SESSION_ENTRY="\n**$SESSION_DATE**: Session $(date '+%H:%M')\n$ACCOMPLISHMENTS"
+        
+        # Find the line with "Recent Session Notes" and add after it
+        awk -v entry="$SESSION_ENTRY" '
+        /### 📅 \*\*Recent Session Notes\*\*/ {
+            print
+            getline
+            print
+            print entry
+            next
+        }
+        {print}
+        ' PROGRESS_LOG.md > PROGRESS_LOG.md.tmp && mv PROGRESS_LOG.md.tmp PROGRESS_LOG.md
+        
+        echo "✅ Session notes added to PROGRESS_LOG.md"
+        echo "ℹ️  Remember to update completed components and statistics for major milestones"
+    fi
+fi
+echo ""
+
 # Check current git status
 echo "📝 Checking for changes to save:"
 if git status --porcelain | grep -q .; then
@@ -125,6 +178,14 @@ echo ""
 
 # Clean up session tracking files
 rm -f .session_start .session_machine .session_user
+
+# Show session accomplishments if any were recorded
+if [[ $UPDATE_PROGRESS =~ ^[Yy]$ ]] && [ -n "$ACCOMPLISHMENTS" ]; then
+    echo "🎆 Session Accomplishments:"
+    echo "========================"
+    echo -e "$ACCOMPLISHMENTS"
+    echo ""
+fi
 
 echo "🎯 Session completed successfully!"
 echo "Next session: Run './dev-start.sh' to resume development"
