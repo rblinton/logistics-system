@@ -105,3 +105,6 @@ tigerbeetle-data/
 
 # Docker volumes
 docker-data/
+
+# Session tracking (temporary files)
+.session_start

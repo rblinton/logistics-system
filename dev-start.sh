@@ -1,10 +1,20 @@
 #!/bin/bash
 
-# Logistics System - Development Session Status Check
-# Run this at the start of any session: ./dev-status.sh
+# Logistics System - Development Session Starter
+# Run this at the start of any session: ./dev-start.sh
+# This script verifies environment, starts services, and prepares for development
 
-echo "🚀 Logistics System - Session Status Check"
-echo "=========================================="
+echo "🚀 Logistics System - Development Session Starter"
+echo "================================================="
+echo ""
+
+# Pull latest changes from GitHub
+echo "🔄 Syncing with GitHub:"
+if git pull > /dev/null 2>&1; then
+    echo "✅ Repository synchronized with remote"
+else
+    echo "⚠️  Could not sync with remote (continuing with local)"
+fi
 echo ""
 
 # Check current directory
@@ -59,10 +69,19 @@ echo "==========================================="
 head -20 PROGRESS_LOG.md | tail -15
 echo ""
 
-echo "🎯 Ready for development!"
+# Save session start time for dev-stop.sh
+echo "$(date '+%Y-%m-%d %H:%M:%S')" > .session_start
+
+echo "🎯 Development Environment Ready!"
+echo "===================================="
+echo "Session started: $(date '+%Y-%m-%d %H:%M:%S')"
 echo ""
 echo "Quick commands:"
-echo "  dotnet test                    # Run all tests"
-echo "  dotnet run --project src/LogisticsSystem.Api  # Start API"
-echo "  cat docs/DEVELOPMENT_GUIDE.md # View development guide"
-echo "  cat PROGRESS_LOG.md           # View full progress log"
+echo "  dotnet test                         # Run all tests"
+echo "  dotnet run --project src/LogisticsSystem.Api  # Start API (https://localhost:7158)"
+echo "  ./dev-stop.sh                      # Save work and end session"
+echo ""
+echo "Documentation:"
+echo "  cat docs/DEVELOPMENT_GUIDE.md      # Development workflow"
+echo "  cat PROGRESS_LOG.md                # Current progress and next steps"
+echo "  cat docs/LOGISTICS_IMPLEMENTATION.md  # Complete system design"
