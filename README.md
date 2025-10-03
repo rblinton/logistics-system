@@ -13,20 +13,21 @@ A high-performance logistics system designed for multi-site operations with offl
 ## 🚀 **Quick Start**
 
 ```bash
-# 1. Clone and build
+# 1. Start development session (does everything automatically)
 cd /home/rob/logistics-system
-dotnet build
+./dev-start.sh
 
-# 2. Run tests (should show 12 passing)
-dotnet test
+# 2. Develop your features...
 
-# 3. Start TigerBeetle (if not already running)
-docker start tigerbeetle
+# 3. End session (commits, pushes, verifies)
+./dev-stop.sh
+```
 
-# 4. Run the API
-cd src/LogisticsSystem.Api
-dotnet run
-# API available at: https://localhost:7158
+### Manual Commands (if needed):
+```bash
+dotnet build && dotnet test                    # Build and test
+dotnet run --project src/LogisticsSystem.Api  # Start API (https://localhost:7158)
+docker start tigerbeetle                       # Start TigerBeetle manually
 ```
 
 ## ✨ **Features**
