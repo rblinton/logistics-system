@@ -8,11 +8,21 @@ echo "🛑 Logistics System - Development Session Stopper"
 echo "=================================================="
 echo ""
 
-# Check if we have a session start time
+# Check if we have session info
 if [ -f .session_start ]; then
     SESSION_START=$(cat .session_start)
+    SESSION_MACHINE=$(cat .session_machine 2>/dev/null || echo "unknown")
+    SESSION_USER=$(cat .session_user 2>/dev/null || echo "unknown")
+    
     echo "📅 Session started: $SESSION_START"
+    if [ "$SESSION_MACHINE" != "$(hostname)" ]; then
+        echo "💻 Started on: $SESSION_USER (different machine)"
+    fi
     echo "📅 Session ending:  $(date '+%Y-%m-%d %H:%M:%S')"
+    echo "💻 Ending on: $(whoami)@$(hostname)"
+    echo ""
+else
+    echo "ℹ️  No session start info found (session started manually)"
     echo ""
 fi
 
@@ -104,14 +114,17 @@ echo "📊 Session Summary:"
 echo "=================="
 if [ -f .session_start ]; then
     echo "Duration: $SESSION_START to $(date '+%Y-%m-%d %H:%M:%S')"
+    if [ "$SESSION_MACHINE" != "$(hostname)" ]; then
+        echo "Multi-machine: $SESSION_USER → $(whoami)@$(hostname)"
+    fi
 fi
 echo "Repository: $(git remote get-url origin 2>/dev/null || echo 'Local only')"
 echo "Branch: $(git branch --show-current)"
 echo "Last commit: $(git log --oneline -1)"
 echo ""
 
-# Clean up session tracking
-rm -f .session_start
+# Clean up session tracking files
+rm -f .session_start .session_machine .session_user
 
 echo "🎯 Session completed successfully!"
 echo "Next session: Run './dev-start.sh' to resume development"

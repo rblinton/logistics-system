@@ -8,6 +8,22 @@ echo "🚀 Logistics System - Development Session Starter"
 echo "================================================="
 echo ""
 
+# Check for existing session from another machine
+if [ -f .session_start ]; then
+    LAST_SESSION_START=$(cat .session_start)
+    LAST_SESSION_MACHINE=$(cat .session_machine 2>/dev/null || echo "unknown")
+    LAST_SESSION_USER=$(cat .session_user 2>/dev/null || echo "unknown")
+    
+    if [ "$LAST_SESSION_MACHINE" != "$(hostname)" ]; then
+        echo "⚠️  Previous session detected from different machine:"
+        echo "   Started: $LAST_SESSION_START on $LAST_SESSION_USER"
+        echo "   Continuing on: $(whoami)@$(hostname)"
+    else
+        echo "🔄 Continuing previous session from $LAST_SESSION_START"
+    fi
+    echo ""
+fi
+
 # Pull latest changes from GitHub
 echo "🔄 Syncing with GitHub:"
 if git pull > /dev/null 2>&1; then
@@ -69,8 +85,10 @@ echo "==========================================="
 head -20 PROGRESS_LOG.md | tail -15
 echo ""
 
-# Save session start time for dev-stop.sh
+# Save session start info for dev-stop.sh and multi-machine continuity
 echo "$(date '+%Y-%m-%d %H:%M:%S')" > .session_start
+echo "$(hostname)" > .session_machine
+echo "$(whoami)@$(hostname)" > .session_user
 
 echo "🎯 Development Environment Ready!"
 echo "===================================="
