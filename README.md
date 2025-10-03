@@ -6,6 +6,7 @@
 [![Tests](https://img.shields.io/badge/tests-12%20passing-brightgreen)](#)
 [![.NET Version](https://img.shields.io/badge/.NET-9.0-blue)](#)
 [![TigerBeetle](https://img.shields.io/badge/TigerBeetle-0.16.60-orange)](#)
+[![GitHub](https://img.shields.io/badge/GitHub-rblinton%2Flogistics--system-blue)](https://github.com/rblinton/logistics-system)
 
 A high-performance logistics system designed for multi-site operations with offline resilience and real-time financial integrity.
 
