@@ -53,3 +53,10 @@ This `~/logistics-system` directory contains everything needed to continue devel
 - Ready-to-run .NET solution
 
 Start any new session from this directory to have full context.
+
+## 🎯 **For Future Projects**
+
+This project demonstrates the tracking system template available at:
+**`~/PROJECT_TRACKING_TEMPLATE.md`**
+
+Use this template for any new development projects to establish the same professional tracking and session continuity system.
