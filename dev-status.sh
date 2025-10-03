@@ -20,12 +20,17 @@ echo "📊 Recent Commits:"
 git log --oneline -3
 echo ""
 
-# Check if TigerBeetle is running
+# Check if TigerBeetle is running and start if needed
 echo "🐅 TigerBeetle Status:"
 if docker ps | grep -q tigerbeetle; then
     echo "✅ TigerBeetle container is running"
 else
-    echo "⚠️  TigerBeetle container is not running (run: docker start tigerbeetle)"
+    echo "⚠️  TigerBeetle container is not running - attempting to start..."
+    if docker start tigerbeetle > /dev/null 2>&1; then
+        echo "✅ TigerBeetle container started successfully"
+    else
+        echo "❌ Failed to start TigerBeetle container (may need: docker run setup)"
+    fi
 fi
 echo ""
 
