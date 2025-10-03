@@ -90,6 +90,10 @@ echo "$(date '+%Y-%m-%d %H:%M:%S')" > .session_start
 echo "$(hostname)" > .session_machine
 echo "$(whoami)@$(hostname)" > .session_user
 
+# Initialize AI session tracking (clean slate for new session)
+rm -f .ai_session_report.md .ai_last_changes .ai_last_commit
+echo "🤖 AI session tracking initialized (fresh start)"
+
 echo "🎯 Development Environment Ready!"
 echo "===================================="
 echo "Session started: $(date '+%Y-%m-%d %H:%M:%S')"

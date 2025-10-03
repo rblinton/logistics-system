@@ -109,3 +109,5 @@ docker-data/
 # AI session tracking (working files)
 .ai_session_context.md
 .ai_session_report.md
+.ai_last_changes
+.ai_last_commit
