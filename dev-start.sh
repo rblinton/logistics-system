@@ -90,9 +90,13 @@ echo "$(date '+%Y-%m-%d %H:%M:%S')" > .session_start
 echo "$(hostname)" > .session_machine
 echo "$(whoami)@$(hostname)" > .session_user
 
-# Initialize AI session tracking (clean slate for new session)
+# Initialize AI session tracking (clean working files, preserve context)
 rm -f .ai_session_report.md .ai_last_changes .ai_last_commit
-echo "🤖 AI session tracking initialized (fresh start)"
+if [ -f .ai_session_context.md ]; then
+    echo "🤖 AI session context preserved from previous machine"
+else
+    echo "🤖 AI session tracking initialized (fresh start)"
+fi
 
 echo "🎯 Development Environment Ready!"
 echo "===================================="

@@ -106,8 +106,8 @@ tigerbeetle-data/
 # Docker volumes
 docker-data/
 
-# AI session tracking (working files)
-.ai_session_context.md
+# AI session tracking (exclude working files but allow context)
 .ai_session_report.md
 .ai_last_changes
 .ai_last_commit
+# Note: .ai_session_context.md is included for multi-machine AI context continuity
