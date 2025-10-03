@@ -54,7 +54,11 @@ fi
 if [ "$CURRENT_COMMIT" != "$LAST_COMMIT" ] && [ "$CURRENT_COMMIT" != "none" ]; then
     echo "**New Commits:**" >> .ai_session_report.md
     echo '```' >> .ai_session_report.md
-    git log --oneline "$LAST_COMMIT"..HEAD 2>/dev/null || git log --oneline -1 >> .ai_session_report.md
+    if [ "$LAST_COMMIT" != "none" ]; then
+        git log --oneline "$LAST_COMMIT"..HEAD 2>/dev/null >> .ai_session_report.md || git log --oneline -1 >> .ai_session_report.md
+    else
+        git log --oneline -1 >> .ai_session_report.md
+    fi
     echo '```' >> .ai_session_report.md
     echo "$CURRENT_COMMIT" > .ai_last_commit
 elif [ "$CURRENT_COMMIT" = "none" ]; then
@@ -66,8 +70,14 @@ fi
 # Test status
 echo "### Test Status:" >> .ai_session_report.md
 if dotnet test --no-build --verbosity quiet > /dev/null 2>&1; then
-    TEST_COUNT=$(dotnet test --no-build --verbosity quiet 2>&1 | grep -o "total: [0-9]*" | grep -o "[0-9]*" | head -1)
-    echo "- Tests passing: $TEST_COUNT" >> .ai_session_report.md
+    # Extract test count from minimal output
+    TEST_OUTPUT=$(dotnet test --no-build --verbosity minimal 2>&1)
+    TEST_COUNT=$(echo "$TEST_OUTPUT" | grep "Total:" | grep -o "Total:[[:space:]]*[0-9]*" | grep -o "[0-9]*" | head -1)
+    if [ -n "$TEST_COUNT" ]; then
+        echo "- Tests passing: $TEST_COUNT" >> .ai_session_report.md
+    else
+        echo "- Tests: PASSING (count unknown)" >> .ai_session_report.md
+    fi
 else
     echo "- Tests: FAILING" >> .ai_session_report.md
 fi
