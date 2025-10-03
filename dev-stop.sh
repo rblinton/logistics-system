@@ -58,9 +58,11 @@ if git diff --name-only HEAD~1 2>/dev/null | grep -q .; then
         PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Enhanced development tooling\n"
     fi
     
-    echo "✅ Auto-detected progress - ready for AI assistant to provide detailed summary"
+    echo "✅ Session progress analysis:"
+    echo -e "$PROGRESS_SUMMARY"
 else
     echo "ℹ️  No code changes detected since last commit"
+    PROGRESS_SUMMARY="No significant changes in this session"
 fi
 echo ""
 
@@ -120,8 +122,14 @@ fi
 
 echo "Running tests..."
 if dotnet test --no-build --verbosity quiet > /dev/null 2>&1; then
-    TEST_COUNT=$(dotnet test --no-build --verbosity quiet 2>&1 | grep -o "total: [0-9]*" | grep -o "[0-9]*")
-    echo "✅ Tests: $TEST_COUNT passing"
+    # Extract test count from minimal output
+    TEST_OUTPUT=$(dotnet test --no-build --verbosity minimal 2>&1)
+    TEST_COUNT=$(echo "$TEST_OUTPUT" | grep "Total:" | grep -o "Total:[[:space:]]*[0-9]*" | grep -o "[0-9]*" | head -1)
+    if [ -n "$TEST_COUNT" ]; then
+        echo "✅ Tests: $TEST_COUNT passing"
+    else
+        echo "✅ Tests: PASSING (count unknown)"
+    fi
 else
     echo "❌ Tests: FAILED - please check before ending session"
 fi
@@ -160,6 +168,13 @@ echo "Repository: $(git remote get-url origin 2>/dev/null || echo 'Local only')"
 echo "Branch: $(git branch --show-current)"
 echo "Last commit: $(git log --oneline -1)"
 echo ""
+
+# Update AI session context before ending session
+if [ -f .ai_session_context.md ]; then
+    CURRENT_DATE=$(date '+%Y-%m-%d %H:%M')
+    sed -i "s/Last Updated: [0-9\-]* [0-9:]*/Last Updated: $CURRENT_DATE/g" .ai_session_context.md
+    echo "🤖 AI session context updated with latest timestamp"
+fi
 
 # Clean up session tracking files
 rm -f .session_start .session_machine .session_user
