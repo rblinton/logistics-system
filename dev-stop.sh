@@ -26,56 +26,41 @@ else
     echo ""
 fi
 
-# Update progress tracking before committing
-echo "📝 Progress Tracking Update:"
-echo "Would you like to update PROGRESS_LOG.md with today's accomplishments? (y/N):"
-read -r UPDATE_PROGRESS
-if [[ $UPDATE_PROGRESS =~ ^[Yy]$ ]]; then
-    echo ""
-    echo "What did you accomplish in this session? (Enter items, press Enter twice when done):"
-    echo "Examples:"
-    echo "  - Implemented LoadLifecycleService interface"
-    echo "  - Added 5 unit tests for ID generation"
-    echo "  - Fixed build issue with TigerBeetle integration"
-    echo ""
+# Intelligent progress tracking - analyze changes for session summary
+echo "📝 Analyzing session progress..."
+
+# Check for code changes and generate progress summary
+if git diff --name-only HEAD~1 2>/dev/null | grep -q .; then
+    CHANGED_FILES=$(git diff --name-only HEAD~1 2>/dev/null | wc -l)
+    NEW_FILES=$(git diff --name-status HEAD~1 2>/dev/null | grep "^A" | wc -l)
+    MODIFIED_FILES=$(git diff --name-status HEAD~1 2>/dev/null | grep "^M" | wc -l)
     
-    ACCOMPLISHMENTS=""
-    while true; do
-        read -r ITEM
-        if [ -z "$ITEM" ]; then
-            break
-        fi
-        if [ -n "$ACCOMPLISHMENTS" ]; then
-            ACCOMPLISHMENTS="$ACCOMPLISHMENTS\n- $ITEM"
-        else
-            ACCOMPLISHMENTS="- $ITEM"
-        fi
-    done
-    
-    if [ -n "$ACCOMPLISHMENTS" ]; then
-        # Update the timestamp in PROGRESS_LOG.md
-        CURRENT_DATE=$(date '+%Y-%m-%d %H:%M')
-        sed -i "s/Updated: [0-9\-]* [0-9:]*/Updated: $CURRENT_DATE/g" PROGRESS_LOG.md
-        
-        # Add to session notes section
-        SESSION_DATE=$(date '+%Y-%m-%d')
-        SESSION_ENTRY="\n**$SESSION_DATE**: Session $(date '+%H:%M')\n$ACCOMPLISHMENTS"
-        
-        # Find the line with "Recent Session Notes" and add after it
-        awk -v entry="$SESSION_ENTRY" '
-        /### 📅 \*\*Recent Session Notes\*\*/ {
-            print
-            getline
-            print
-            print entry
-            next
-        }
-        {print}
-        ' PROGRESS_LOG.md > PROGRESS_LOG.md.tmp && mv PROGRESS_LOG.md.tmp PROGRESS_LOG.md
-        
-        echo "✅ Session notes added to PROGRESS_LOG.md"
-        echo "ℹ️  Remember to update completed components and statistics for major milestones"
+    # Auto-generate session summary based on file changes
+    PROGRESS_SUMMARY="Session Progress Summary:\n"
+    if [ "$NEW_FILES" -gt 0 ]; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Created $NEW_FILES new files\n"
     fi
+    if [ "$MODIFIED_FILES" -gt 0 ]; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Modified $MODIFIED_FILES existing files\n"
+    fi
+    
+    # Analyze specific types of changes
+    if git diff --name-only HEAD~1 2>/dev/null | grep -q "\.cs$"; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Updated C# source code\n"
+    fi
+    if git diff --name-only HEAD~1 2>/dev/null | grep -q "Test"; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Modified test files\n"
+    fi
+    if git diff --name-only HEAD~1 2>/dev/null | grep -q "\.md$"; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Updated documentation\n"
+    fi
+    if git diff --name-only HEAD~1 2>/dev/null | grep -q "dev-"; then
+        PROGRESS_SUMMARY="$PROGRESS_SUMMARY- Enhanced development tooling\n"
+    fi
+    
+    echo "✅ Auto-detected progress - ready for AI assistant to provide detailed summary"
+else
+    echo "ℹ️  No code changes detected since last commit"
 fi
 echo ""
 
@@ -179,13 +164,10 @@ echo ""
 # Clean up session tracking files
 rm -f .session_start .session_machine .session_user
 
-# Show session accomplishments if any were recorded
-if [[ $UPDATE_PROGRESS =~ ^[Yy]$ ]] && [ -n "$ACCOMPLISHMENTS" ]; then
-    echo "🎆 Session Accomplishments:"
-    echo "========================"
-    echo -e "$ACCOMPLISHMENTS"
-    echo ""
-fi
+# AI Assistant will provide progress summary when asked
+echo "🤖 AI Assistant Progress Tracking:"
+echo "Ready to provide intelligent progress summary based on session analysis"
+echo ""
 
 echo "🎯 Session completed successfully!"
 echo "Next session: Run './dev-start.sh' to resume development"

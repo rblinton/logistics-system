@@ -1,58 +1,59 @@
 #!/bin/bash
 
-# Quick Progress Update Script
-# Use during development sessions to quickly log accomplishments
-# without ending the session
+# AI Session Report Generator
+# Generates technical session summary for AI assistant to process
 
-echo "📝 Quick Progress Update"
-echo "======================="
-echo ""
-echo "What did you just accomplish? (Enter items, press Enter twice when done):"
-echo "Examples:"
-echo "  - Implemented LoadLifecycleService interface"
-echo "  - Added 5 unit tests for ID generation"
-echo "  - Fixed build issue with TigerBeetle integration"
+echo "📝 Generating AI Session Report"
+echo "=============================="
 echo ""
 
-ACCOMPLISHMENTS=""
-while true; do
-    read -r ITEM
-    if [ -z "$ITEM" ]; then
-        break
-    fi
-    if [ -n "$ACCOMPLISHMENTS" ]; then
-        ACCOMPLISHMENTS="$ACCOMPLISHMENTS\n- $ITEM"
-    else
-        ACCOMPLISHMENTS="- $ITEM"
-    fi
-done
+# Generate timestamp
+TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
-if [ -n "$ACCOMPLISHMENTS" ]; then
-    # Update the timestamp in PROGRESS_LOG.md
-    CURRENT_DATE=$(date '+%Y-%m-%d %H:%M')
-    sed -i "s/Updated: [0-9\\-]* [0-9:]*/Updated: $CURRENT_DATE/g" PROGRESS_LOG.md
-    
-    # Add to session notes section
-    SESSION_DATE=$(date '+%Y-%m-%d')
-    SESSION_ENTRY="\n**$SESSION_DATE**: Progress update $(date '+%H:%M')\n$ACCOMPLISHMENTS"
-    
-    # Find the line with "Recent Session Notes" and add after it
-    awk -v entry="$SESSION_ENTRY" '
-    /### 📅 \*\*Recent Session Notes\*\*/ {
-        print
-        getline
-        print
-        print entry
-        next
-    }
-    {print}
-    ' PROGRESS_LOG.md > PROGRESS_LOG.md.tmp && mv PROGRESS_LOG.md.tmp PROGRESS_LOG.md
-    
-    echo "✅ Progress updated in PROGRESS_LOG.md"
-    echo "📊 Current session accomplishments:"
-    echo -e "$ACCOMPLISHMENTS"
-    echo ""
-    echo "💡 Continue developing, or run './dev-stop.sh' when ready to end session"
-else
-    echo "ℹ️  No progress items entered"
+# Analyze git changes
+echo "## Session Analysis Report - $TIMESTAMP" > .ai_session_report.md
+echo "" >> .ai_session_report.md
+
+# Check for uncommitted changes
+if git status --porcelain | grep -q .; then
+    echo "### Uncommitted Changes:" >> .ai_session_report.md
+    git status --short >> .ai_session_report.md
+    echo "" >> .ai_session_report.md
 fi
+
+# Check recent commits if any
+if git log --oneline -5 > /dev/null 2>&1; then
+    echo "### Recent Commits:" >> .ai_session_report.md
+    git log --oneline -3 >> .ai_session_report.md
+    echo "" >> .ai_session_report.md
+fi
+
+# Test status
+echo "### Test Status:" >> .ai_session_report.md
+if dotnet test --no-build --verbosity quiet > /dev/null 2>&1; then
+    TEST_COUNT=$(dotnet test --no-build --verbosity quiet 2>&1 | grep -o "total: [0-9]*" | grep -o "[0-9]*" | head -1)
+    echo "- Tests passing: $TEST_COUNT" >> .ai_session_report.md
+else
+    echo "- Tests: FAILING" >> .ai_session_report.md
+fi
+
+# Build status
+if dotnet build --no-restore > /dev/null 2>&1; then
+    echo "- Build: SUCCESS" >> .ai_session_report.md
+else
+    echo "- Build: FAILED" >> .ai_session_report.md
+fi
+echo "" >> .ai_session_report.md
+
+# Service status
+echo "### Service Status:" >> .ai_session_report.md
+if docker ps | grep -q tigerbeetle; then
+    echo "- TigerBeetle: Running" >> .ai_session_report.md
+else
+    echo "- TigerBeetle: Stopped" >> .ai_session_report.md
+fi
+echo "" >> .ai_session_report.md
+
+echo "✅ Session report generated in .ai_session_report.md"
+echo "💡 AI assistant can now provide intelligent progress updates"
+echo "    based on technical analysis rather than manual input"
