@@ -53,7 +53,6 @@ logistics-system/                    # Main development workspace
 ├── src/
 │   ├── LogisticsSystem.Core/        # ✅ Domain models + LogisticsId
 │   ├── LogisticsSystem.TigerBeetle/ # ✅ Base service + interfaces
-│   └── LogisticsSystem.Api/         # ✅ Web API skeleton ready
 ├── tests/
 │   └── LogisticsSystem.Core.Tests/  # ✅ 12 comprehensive tests
 ├── docs/                            # ✅ Complete documentation hub
@@ -108,7 +107,7 @@ cd ~/logistics-system
 dotnet build && dotnet test
 
 # Run API locally  
-cd src/LogisticsSystem.Api && dotnet run
+# API endpoints will be developed in future phases
 
 # Start TigerBeetle (if needed)
 docker start tigerbeetle

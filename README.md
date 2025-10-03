@@ -26,7 +26,7 @@ cd /home/rob/logistics-system
 ### Manual Commands (if needed):
 ```bash
 dotnet build && dotnet test                    # Build and test
-dotnet run --project src/LogisticsSystem.Api  # Start API (https://localhost:7158)
+# API coming soon - currently building core functionality
 docker start tigerbeetle                       # Start TigerBeetle manually
 ```
 
@@ -64,7 +64,6 @@ Corporate HQ (Hub)          Remote Sites (Spokes)
 |---------|---------|
 | **LogisticsSystem.Core** | Domain models, ID generation, shared logic |
 | **LogisticsSystem.TigerBeetle** | Accounting integration, offline buffer |
-| **LogisticsSystem.Api** | REST API, configuration, health checks |
 | **LogisticsSystem.Core.Tests** | Unit tests (12 passing) |
 
 ## 🧪 **Testing**

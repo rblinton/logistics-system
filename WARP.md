@@ -34,13 +34,10 @@ dotnet test --filter "LogisticsIdTests"
 dotnet build --verbosity normal
 ```
 
-### API Development
+### Future API Development
 ```bash
-# Start API server (https://localhost:7158)
-dotnet run --project src/LogisticsSystem.Api
-
-# Start API with watch mode for hot reload
-dotnet watch run --project src/LogisticsSystem.Api
+# API project will be added in future phases
+# Currently focusing on core business logic
 ```
 
 ### TigerBeetle Management
@@ -71,7 +68,6 @@ Corporate HQ (Hub)          Remote Sites (Spokes)
 ### Project Structure
 - **LogisticsSystem.Core** - Domain models, LogisticsId system, shared logic
 - **LogisticsSystem.TigerBeetle** - Accounting integration, offline buffer
-- **LogisticsSystem.Api** - REST API, configuration, health checks
 - **LogisticsSystem.Core.Tests** - Unit tests for core functionality
 
 ### Data Flow

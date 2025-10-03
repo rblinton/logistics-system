@@ -33,7 +33,6 @@ You now have a complete **foundation** for iterative logistics development with:
 ├── src/
 │   ├── LogisticsSystem.Core/    # Domain models, LogisticsId, shared logic
 │   ├── LogisticsSystem.TigerBeetle/ # TigerBeetle integration services  
-│   └── LogisticsSystem.Api/     # Web API for logistics operations
 └── tests/
     └── LogisticsSystem.Core.Tests/ # Unit tests (12 passing tests)
 ```
@@ -44,7 +43,6 @@ You now have a complete **foundation** for iterative logistics development with:
 |---------|---------|--------------|
 | **Core** | Domain models, ID generation, shared contracts | None |
 | **TigerBeetle** | Accounting integration, offline buffer | Core, tigerbeetle |
-| **Api** | REST endpoints, configuration, hosting | Core, TigerBeetle |
 | **Tests** | Unit tests, integration tests | Core |
 
 ---
@@ -89,10 +87,10 @@ docker ps | grep tigerbeetle
 # ✅ AI maintains intelligent progress summary
 ```
 
-#### **3. Run the API (When Needed)**
+#### **3. Future API Development**
 ```bash
-dotnet run --project src/LogisticsSystem.Api
-# API available at: https://localhost:7158
+# API layer will be developed in future phases
+# Currently focusing on core functionality
 ```
 
 #### **4. End Development Session**
@@ -267,7 +265,7 @@ public interface ITigerBeetleService
 ## 🔧 **Configuration Management**
 
 ### **Development Configuration**
-Located in `src/LogisticsSystem.Api/appsettings.Development.json`:
+Will be located in future API project:
 
 ```json
 {
@@ -417,7 +415,7 @@ docker restart tigerbeetle
 ### **Configuration Issues**
 ```bash
 # Verify appsettings files exist
-ls src/LogisticsSystem.Api/appsettings*.json
+# Configuration files will be created when API project is added
 
 # Check configuration binding in Program.cs
 ```

@@ -15,7 +15,7 @@ This directory contains all the key documentation for the multi-site logistics s
 ## Project Status
 
 ✅ **Completed:**
-- .NET solution structure with Core, API, and Test projects
+- .NET solution structure with Core, TigerBeetle, and Test projects
 - LogisticsId implementation with comprehensive tests (12 passing)
 - Domain models for loads, vendors, carriers, products
 - TigerBeetle integration foundation
@@ -52,7 +52,7 @@ This directory contains all the key documentation for the multi-site logistics s
 dotnet build && dotnet test
 
 # Run API
-dotnet run --project src/LogisticsSystem.Api
+# API project will be added in future development phases
 
 # View project structure
 find src -name "*.cs" | head -10
