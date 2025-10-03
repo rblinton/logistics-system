@@ -66,36 +66,53 @@ dotnet test
 docker ps | grep tigerbeetle
 ```
 
-### **Development Workflow**
+### **🔄 AI-Driven Development Workflow**
 
-#### **1. Start TigerBeetle (if not running)**
+**The system now includes intelligent session management with AI progress tracking:**
+
+#### **1. Start Development Session**
 ```bash
-# From ~/tigerbeetle-dotnet directory
-docker start tigerbeetle
+./dev-start.sh
+# ✅ Automatically syncs with GitHub (smart pull)
+# ✅ Auto-starts TigerBeetle if needed
+# ✅ Verifies build and tests (12 passing)
+# ✅ Detects multi-machine transitions
+# ✅ Shows current progress and next steps
 ```
 
-#### **2. Run the API**
+#### **2. Optional Progress Checks During Development**
 ```bash
-cd src/LogisticsSystem.Api
-dotnet run
-
-# API will be available at:
-# - HTTPS: https://localhost:7158
-# - HTTP: http://localhost:5158
+./update-progress.sh
+# ✅ Generates technical analysis for AI assistant
+# ✅ Tracks incremental changes (no duplication)
+# ✅ Captures build/test status automatically
+# ✅ AI maintains intelligent progress summary
 ```
 
-#### **3. Development Iteration Cycle**
+#### **3. Run the API (When Needed)**
 ```bash
-# Make changes to your code
-# Run tests to verify changes
-dotnet test
-
-# Test specific project
-dotnet test tests/LogisticsSystem.Core.Tests/
-
-# Run with watch mode for continuous testing
-dotnet watch test --project tests/LogisticsSystem.Core.Tests/
+dotnet run --project src/LogisticsSystem.Api
+# API available at: https://localhost:7158
 ```
+
+#### **4. End Development Session**
+```bash
+./dev-stop.sh
+# ✅ AI analyzes session accomplishments automatically
+# ✅ Commits with custom or auto-generated messages
+# ✅ Pushes to GitHub with verification
+# ✅ Final build/test validation (12 passing)
+# ✅ Optional TigerBeetle shutdown
+# ✅ Session summary with duration and progress
+```
+
+### **🤖 AI Progress Tracking Features**
+
+- **Zero Manual Entry**: AI tracks progress based on code changes
+- **Multi-Machine Continuity**: Progress follows you across development machines
+- **Intelligent Analysis**: Detects file types, commit patterns, test results
+- **Session Boundaries**: Clean start/stop with comprehensive summaries
+- **Error Prevention**: Smart git operations avoid conflicts
 
 ---
 
@@ -447,18 +464,24 @@ Your development environment is **completely set up** and ready for productive i
 4. **✅ Clear Roadmap** - Phase-by-phase development plan
 5. **✅ Documentation** - Complete guides and references
 
-### **Start Your First Iteration**
+### **🊆 Start Your First Iteration with AI-Driven Workflow**
 
 ```bash
 cd /home/rob/logistics-system
 
-# 1. Build and test
-dotnet build && dotnet test
+# 1. Start your development session
+./dev-start.sh
+# ✅ Everything is verified and ready automatically
 
-# 2. Start developing your first feature
+# 2. Develop your first feature
 # Focus on: LoadLifecycleService implementation
 
-# 3. Iterate with confidence!
+# 3. Optional: Check progress anytime
+./update-progress.sh
+
+# 4. End your session
+./dev-stop.sh
+# ✅ AI analyzes and saves all progress automatically
 ```
 
 You now have everything needed for efficient, iterative development of your logistics system! 🚀

@@ -16,10 +16,13 @@ This directory contains all the key documentation for the multi-site logistics s
 
 ✅ **Completed:**
 - .NET solution structure with Core, API, and Test projects
-- LogisticsId implementation with comprehensive tests
+- LogisticsId implementation with comprehensive tests (12 passing)
 - Domain models for loads, vendors, carriers, products
 - TigerBeetle integration foundation
 - Configuration management
+- **AI-driven progress tracking system**
+- **Intelligent session management (dev-start.sh/dev-stop.sh)**
+- **Multi-machine development continuity**
 - Comprehensive documentation
 
 🚧 **Next Steps:**
@@ -28,17 +31,28 @@ This directory contains all the key documentation for the multi-site logistics s
 - Add offline buffering capabilities
 - Develop API endpoints
 
-## Quick Start Commands
+## 🊆 AI-Driven Development Workflow
 
 ```bash
 # From ~/logistics-system directory:
 
-# Build and test
-dotnet build
-dotnet test
+# Start development session (everything automated)
+./dev-start.sh
 
-# Run specific tests
-dotnet test tests/LogisticsSystem.Tests/ --filter "LogisticsId"
+# Optional: Check progress during development
+./update-progress.sh
+
+# End session (AI tracks progress automatically)
+./dev-stop.sh
+```
+
+### Manual Commands (if needed):
+```bash
+# Build and test
+dotnet build && dotnet test
+
+# Run API
+dotnet run --project src/LogisticsSystem.Api
 
 # View project structure
 find src -name "*.cs" | head -10
