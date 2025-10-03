@@ -3,6 +3,15 @@
 # Logistics System - Development Session Starter
 # Run this at the start of any session: ./dev-start.sh
 # This script verifies environment, starts services, and prepares for development
+# 
+# Options:
+#   --force-pull    Force git pull even with uncommitted changes (stashes first)
+
+# Parse command line options
+FORCE_PULL=false
+if [ "$1" = "--force-pull" ]; then
+    FORCE_PULL=true
+fi
 
 echo "🚀 Logistics System - Development Session Starter"
 echo "================================================="
@@ -24,12 +33,34 @@ if [ -f .session_start ]; then
     echo ""
 fi
 
-# Pull latest changes from GitHub
+# Smart sync with GitHub - check for uncommitted changes first
 echo "🔄 Syncing with GitHub:"
-if git pull > /dev/null 2>&1; then
-    echo "✅ Repository synchronized with remote"
+if git diff --quiet && git diff --cached --quiet; then
+    # No uncommitted changes, safe to pull
+    PULL_OUTPUT=$(git pull 2>&1)
+    if [ $? -eq 0 ]; then
+        if echo "$PULL_OUTPUT" | grep -q "Already up to date"; then
+            echo "✅ Repository up to date"
+        else
+            echo "✅ Repository synchronized - new changes pulled"
+        fi
+    else
+        echo "⚠️  Could not sync with remote (continuing with local)"
+    fi
+elif [ "$FORCE_PULL" = true ]; then
+    # Force pull requested - stash changes first
+    echo "💾 Force pull requested - stashing uncommitted changes..."
+    git stash push -m "dev-start.sh auto-stash $(date '+%Y-%m-%d %H:%M:%S')"
+    PULL_OUTPUT=$(git pull 2>&1)
+    if [ $? -eq 0 ]; then
+        echo "✅ Repository synchronized - changes stashed"
+        echo "   Use 'git stash pop' to restore your changes"
+    else
+        echo "⚠️  Pull failed even after stashing"
+    fi
 else
-    echo "⚠️  Could not sync with remote (continuing with local)"
+    echo "⚠️  Uncommitted changes detected - skipping pull to avoid conflicts"
+    echo "   Options: commit changes, or run './dev-start.sh --force-pull' to stash & pull"
 fi
 echo ""
 
