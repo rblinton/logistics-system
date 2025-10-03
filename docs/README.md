@@ -1,0 +1,55 @@
+# Logistics System Documentation
+
+This directory contains all the key documentation for the multi-site logistics system project.
+
+## Quick Navigation
+
+### Core Documents
+- **[LOGISTICS_IMPLEMENTATION.md](./LOGISTICS_IMPLEMENTATION.md)** - Complete implementation design with LogisticsId approach, domain models, and system architecture
+- **[DEVELOPMENT_GUIDE.md](./DEVELOPMENT_GUIDE.md)** - Comprehensive development workflow, testing, and project structure guide
+
+### Setup & Infrastructure
+- **[TIGERBEETLE_SETUP.md](./TIGERBEETLE_SETUP.md)** - TigerBeetle installation and configuration guide
+- **[PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md)** - Production deployment strategies and considerations
+
+## Project Status
+
+✅ **Completed:**
+- .NET solution structure with Core, API, and Test projects
+- LogisticsId implementation with comprehensive tests
+- Domain models for loads, vendors, carriers, products
+- TigerBeetle integration foundation
+- Configuration management
+- Comprehensive documentation
+
+🚧 **Next Steps:**
+- Implement LoadLifecycleService
+- Build out master entity services
+- Add offline buffering capabilities
+- Develop API endpoints
+
+## Quick Start Commands
+
+```bash
+# From ~/logistics-system directory:
+
+# Build and test
+dotnet build
+dotnet test
+
+# Run specific tests
+dotnet test tests/LogisticsSystem.Tests/ --filter "LogisticsId"
+
+# View project structure
+find src -name "*.cs" | head -10
+```
+
+## Session Continuity
+
+This `~/logistics-system` directory contains everything needed to continue development:
+- All source code and tests
+- Complete documentation and design decisions
+- Configuration templates
+- Ready-to-run .NET solution
+
+Start any new session from this directory to have full context.

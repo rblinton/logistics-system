@@ -1,0 +1,107 @@
+# .NET Build Outputs
+bin/
+obj/
+out/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+packages/
+.nuget/
+
+# MSBuild
+MSBuildAllProjects
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Visual Studio
+.vs/
+
+# Rider
+.idea/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.coverage
+*.coveragexml
+
+# Test outputs
+TestResults/
+*.trx
+*.xml
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Temporary folders
+tmp/
+temp/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# MonoDevelop
+*.pidb
+*.pdb
+
+# Unity
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+
+# Never commit sensitive data
+**/appsettings.*.json
+!**/appsettings.json
+!**/appsettings.Development.json
+
+# TigerBeetle data files
+*.tb
+tigerbeetle-data/
+
+# Docker volumes
+docker-data/
